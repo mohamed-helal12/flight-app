@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✈️ رحلتي | أسعار طيران حقيقية - مصر → السعودية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --secondary: #34a853;
+            --accent: #f9ab00;
+            --danger: #ea4335;
+            --bg: #f0f4f8;
+            --text: #1a1a2e;
+            --text-light: #6b7280;
+            --border: #e2e8f0;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-hover: 0 8px 40px rgba(0,0,0,0.15);
+            --gradient: linear-gradient(135deg, #1a73e8, #34a853);
+            --gradient-dark: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); }
+
+        /* === NAVBAR === */
+        .navbar {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            padding: 12px 0;
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+        .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 8px; font-size: 1.4rem; font-weight: 800; color: var(--primary); text-decoration: none; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        .api-badge {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.75rem; padding: 5px 12px; border-radius: 20px;
+            font-weight: 700;
+        }
+        .api-badge.online { background: #dcfce7; color: #166534; }
+        .api-badge.offline { background: #fee2e2; color: #991b1b; }
+        .api-dot { width: 8px; height: 8px; border-radius: 50%; animation: blink 1.5s infinite; }
+        .api-badge.online .api-dot { background: #22c55e; }
+        .api-badge.offline .api-dot { background: #ef4444; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+        /* === HERO === */
+        .hero {
+            background: var(--gradient-dark);
+            min-height: 380px; display: flex; align-items: center;
+            margin-top: 60px; text-align: center;
+        }
+        .hero-content { width: 100%; padding: 40px 0; }
+        .hero h1 { font-size: 2.2rem; color: white; font-weight: 900; margin-bottom: 8px; }
+        .hero p { color: rgba(255,255,255,0.7); font-size: 1.1rem; margin-bottom: 15px; }
+        .live-tag {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(255,255,255,0.12); padding: 6px 18px;
+            border-radius: 50px; color: #4ade80; font-weight: 700; font-size: 0.85rem;
+        }
+        .live-tag .dot { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; animation: blink 1s infinite; }
+
+        /* === SEARCH === */
+        .search-section { margin-top: -45px; position: relative; z-index: 10; padding-bottom: 25px; }
+        .search-card { background: white; border-radius: 18px; padding: 28px; box-shadow: var(--shadow-hover); }
+        .search-card h2 { margin-bottom: 18px; font-size: 1.2rem; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+
+        .search-form { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 12px; align-items: end; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-weight: 600; font-size: 0.82rem; color: var(--text-light); display: flex; align-items: center; gap: 4px; }
+        .form-group select, .form-group input {
+            padding: 11px 14px; border: 2px solid var(--border); border-radius: 10px;
+            font-family: 'Cairo'; font-size: 0.92rem; background: #f8fafc; transition: 0.3s;
+        }
+        .form-group select:focus, .form-group input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,115,232,0.1); }
+
+        .btn-search {
+            padding: 11px 28px; background: var(--gradient); color: white; border: none;
+            border-radius: 10px; font-family: 'Cairo'; font-size: 1rem; font-weight: 700;
+            cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 7px; white-space: nowrap;
+        }
+        .btn-search:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,115,232,0.4); }
+        .btn-search:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        /* === SOURCES === */
+        .sources-bar { display: flex; gap: 8px; padding: 12px 0; flex-wrap: wrap; align-items: center; }
+        .source-tag { padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+        .source-tag.ok { background: #dcfce7; color: #166534; }
+        .source-tag.fail { background: #fee2e2; color: #991b1b; }
+
+        /* === FILTERS === */
+        .filters-bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; padding: 12px 0; }
+        .filter-btn {
+            padding: 7px 16px; border: 2px solid var(--border); border-radius: 50px;
+            background: white; font-family: 'Cairo'; font-weight: 600; cursor: pointer;
+            transition: 0.3s; font-size: 0.82rem; display: flex; align-items: center; gap: 4px;
+        }
+        .filter-btn:hover, .filter-btn.active { border-color: var(--primary); background: var(--primary); color: white; }
+        .sort-select {
+            padding: 7px 14px; border: 2px solid var(--border); border-radius: 50px;
+            font-family: 'Cairo'; font-weight: 600; background: white; margin-right: auto; font-size: 0.82rem;
+        }
+        .results-info { font-weight: 700; color: var(--text-light); font-size: 0.95rem; }
+
+        /* === FLIGHT CARDS === */
+        .flights-list { display: flex; flex-direction: column; gap: 14px; padding-bottom: 30px; }
+        .flight-card {
+            background: white; border-radius: 14px; overflow: hidden;
+            box-shadow: var(--shadow); transition: 0.4s; border: 2px solid transparent;
+            animation: fadeUp 0.4s ease forwards; opacity: 0;
+        }
+        .flight-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); border-color: var(--primary); }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+        .card-inner { display: grid; grid-template-columns: 180px 1fr 200px; }
+
+        .airline-col {
+            padding: 18px; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; border-left: 2px solid var(--border); gap: 6px;
+        }
+        .airline-icon {
+            width: 58px; height: 58px; border-radius: 12px; display: flex;
+            align-items: center; justify-content: center; font-size: 1.2rem;
+            font-weight: 900; color: white; box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+        }
+        .airline-name { font-weight: 700; font-size: 0.85rem; text-align: center; }
+        .airline-stars { color: var(--accent); font-size: 0.75rem; }
+        .from-tag { font-size: 0.65rem; padding: 2px 7px; border-radius: 4px; background: #f0f4f8; color: var(--text-light); font-weight: 600; }
+
+        .flight-col { padding: 18px 22px; display: flex; flex-direction: column; gap: 10px; }
+        .route-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .city-box { text-align: center; min-width: 70px; }
+        .city-time { font-size: 1.5rem; font-weight: 800; }
+        .city-code { font-size: 0.95rem; font-weight: 700; color: var(--primary); }
+        .city-label { font-size: 0.75rem; color: var(--text-light); }
+
+        .route-line { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+        .dur-tag { font-size: 0.75rem; color: var(--text-light); font-weight: 600; background: #f0f4f8; padding: 2px 10px; border-radius: 15px; }
+        .line-bar { width: 100%; height: 2px; background: linear-gradient(90deg, var(--primary), var(--secondary)); border-radius: 1px; position: relative; }
+        .line-bar::before { content:'✈'; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); font-size: 0.9rem; background: white; padding: 0 5px; }
+        .stop-tag { font-size: 0.7rem; font-weight: 600; }
+
+        .tags-row { display: flex; gap: 5px; flex-wrap: wrap; }
+        .tag { padding: 3px 9px; border-radius: 5px; font-size: 0.7rem; font-weight: 600; display: flex; align-items: center; gap: 3px; }
+        .tag.green { background: #dcfce7; color: #166534; }
+        .tag.blue { background: #dbeafe; color: #1e40af; }
+        .tag.orange { background: #fef3c7; color: #92400e; }
+        .tag.purple { background: #f3e8ff; color: #6b21a8; }
+        .tag.red { background: #fee2e2; color: #991b1b; }
+
+        .price-col {
+            padding: 18px; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; background: linear-gradient(135deg, #f8fafc, #eef2ff);
+            border-right: 2px solid var(--border); gap: 5px;
+        }
+        .price-old { text-decoration: line-through; color: var(--danger); font-size: 0.8rem; }
+        .price-off { background: var(--danger); color: white; padding: 2px 7px; border-radius: 15px; font-size: 0.65rem; font-weight: 700; }
+        .price-now { font-size: 1.7rem; font-weight: 900; color: var(--primary); }
+        .price-cur { font-size: 0.8rem; color: var(--text-light); font-weight: 600; }
+        .price-per { font-size: 0.7rem; color: var(--text-light); }
+        .seats-warn { font-size: 0.7rem; color: var(--danger); font-weight: 700; }
+
+        .btn-book {
+            padding: 9px 22px; background: var(--gradient); color: white; border: none;
+            border-radius: 8px; font-family: 'Cairo'; font-weight: 700; cursor: pointer;
+            transition: 0.3s; font-size: 0.9rem; width: 100%;
+        }
+        .btn-book:hover { transform: scale(1.03); box-shadow: 0 4px 15px rgba(26,115,232,0.4); }
+
+        .best-deal { position: relative; border-color: var(--accent); }
+        .best-deal::before {
+            content:'⭐ أفضل سعر'; position: absolute; top: 0; right: 16px;
+            background: linear-gradient(135deg, #f9ab00, #ff6b6b); color: white;
+            padding: 3px 14px; border-radius: 0 0 8px 8px; font-weight: 700; font-size: 0.75rem; z-index: 5;
+        }
+
+        .details-bar { padding: 8px 18px; background: #f8fafc; border-top: 1px solid var(--border); text-align: center; }
+        .details-btn {
+            background: none; border: none; color: var(--primary); font-family: 'Cairo';
+            font-weight: 700; cursor: pointer; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px;
+        }
+        .details-panel { display: none; padding: 16px 18px; background: #f8fafc; border-top: 1px solid var(--border); }
+        .details-panel.open { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+        .details-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .d-item { display: flex; align-items: center; gap: 8px; padding: 9px; background: white; border-radius: 8px; }
+        .d-item i { font-size: 1rem; color: var(--primary); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #eef2ff; border-radius: 7px; flex-shrink: 0; }
+        .d-item strong { display: block; font-size: 0.75rem; }
+        .d-item span { font-size: 0.7rem; color: var(--text-light); }
+
+        /* === LOADING === */
+        .loading { display: none; text-align: center; padding: 50px; }
+        .loading.show { display: block; }
+        .spinner { width: 45px; height: 45px; border: 4px solid var(--border); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 12px; }
+        @keyframes spin { to{transform:rotate(360deg)} }
+        .load-sources { display: flex; gap: 8px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+
+        /* === ERROR === */
+        .error-box {
+            display: none; background: #fef2f2; border: 2px solid #fecaca;
+            border-radius: 12px; padding: 20px; text-align: center; margin: 15px 0;
+        }
+        .error-box.show { display: block; }
+        .retry-btn { padding: 8px 18px; background: var(--danger); color: white; border: none; border-radius: 8px; font-family: 'Cairo'; font-weight: 700; cursor: pointer; margin-top: 8px; }
+
+        /* === FOOTER === */
+        .footer { background: var(--gradient-dark); color: white; padding: 25px 0; margin-top: 30px; text-align: center; }
+        .footer p { color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+
+        .pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .search-form { grid-template-columns: 1fr 1fr; }
+            .card-inner { grid-template-columns: 1fr; }
+            .airline-col { border-left: none; border-bottom: 2px solid var(--border); flex-direction: row; padding: 10px 14px; }
+            .price-col { border-right: none; border-top: 2px solid var(--border); flex-direction: row; flex-wrap: wrap; justify-content: space-between; }
+            .hero h1 { font-size: 1.5rem; }
+            .details-grid { grid-template-columns: 1fr; }
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+<!-- ====== NAVBAR ====== -->
+<nav class="navbar">
+    <div class="container">
+        <a href="#" class="logo"><i class="fas fa-plane-departure"></i> رحلتي</a>
+        <div class="api-badge offline" id="apiBadge">
+            <span class="api-dot"></span>
+            <span id="apiText">جاري الاتصال...</span>
+        </div>
+    </div>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="live-tag"><span class="dot"></span> أسعار حقيقية من مصادر موثوقة</div>
+            <h1>🇪🇬 ✈️ 🇸🇦</h1>
+            <h1>قارن أسعار الطيران - مصر للسعودية</h1>
+            <p>نجمع أسعار حقيقية من Amadeus و Kiwi ونعرضهالك في مكان واحد</p>
+        </div>
+    </div>
+</section>
+
+<!-- ====== SEARCH ====== -->
+<section class="search-section" id="search">
+    <div class="container">
+        <div class="search-card">
+            <h2><i class="fas fa-search"></i> ابحث عن رحلتك</h2>
+            <div class="search-form">
+                <div class="form-group">
+                    <label><i class="fas fa-plane-departure"></i> من</label>
+                    <select id="fromCity">
+                        <option value="CAI">القاهرة (CAI)</option>
+                        <option value="ALY">الإسكندرية (ALY)</option>
+                        <option value="SSH">شرم الشيخ (SSH)</option>
+                        <option value="HRG">الغردقة (HRG)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-plane-arrival"></i> إلى</label>
+                    <select id="toCity">
+                        <option value="JED">جدة (JED)</option>
+                        <option value="RUH">الرياض (RUH)</option>
+                        <option value="DMM">الدمام (DMM)</option>
+                        <option value="MED">المدينة المنورة (MED)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-calendar"></i> تاريخ السفر</label>
+                    <input type="date" id="travelDate">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-users"></i> المسافرون</label>
+                    <select id="passengers">
+                        <option value="1">1 مسافر</option>
+                        <option value="2">2 مسافرين</option>
+                        <option value="3">3 مسافرين</option>
+                    </select>
+                </div>
+                <button class="btn-search" id="searchBtn" onclick="searchFlights()">
+                    <i class="fas fa-search"></i> بحث
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====== RESULTS AREA ====== -->
+<section class="container">
+    <div class="sources-bar" id="sourcesBar" style="display:none;"></div>
+
+    <div id="filtersArea" style="display:none;">
+        <div class="filters-bar">
+            <span class="results-info" id="resultsInfo"></span>
+            <button class="filter-btn active" onclick="applyFilter('all',this)"><i class="fas fa-th"></i> الكل</button>
+            <button class="filter-btn" onclick="applyFilter('direct',this)"><i class="fas fa-arrows-alt-h"></i> مباشر</button>
+            <button class="filter-btn" onclick="applyFilter('cheapest',this)"><i class="fas fa-tag"></i> الأرخص</button>
+            <button class="filter-btn" onclick="applyFilter('fastest',this)"><i class="fas fa-bolt"></i> الأسرع</button>
+            <button class="filter-btn" onclick="applyFilter('top',this)"><i class="fas fa-star"></i> الأعلى تقييماً</button>
+            <select class="sort-select" id="sortBy" onchange="applySort()">
+                <option value="price-asc">السعر: الأقل</option>
+                <option value="price-desc">السعر: الأعلى</option>
+                <option value="duration">المدة: الأقصر</option>
+                <option value="rating">التقييم: الأعلى</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="loading" id="loadingArea">
+        <div class="spinner"></div>
+        <h3>🔍 جاري البحث عن أسعار حقيقية...</h3>
+        <p>نبحث في Amadeus و Kiwi</p>
+        <div class="load-sources">
+            <span class="source-tag" style="background:#fef3c7;color:#92400e;"><i class="fas fa-spinner fa-spin"></i> Amadeus</span>
+            <span class="source-tag" style="background:#fef3c7;color:#92400e;"><i class="fas fa-spinner fa-spin"></i> Kiwi</span>
+        </div>
+    </div>
+
+    <div class="error-box" id="errorArea">
+        <i class="fas fa-exclamation-triangle" style="font-size:2rem;color:var(--danger);display:block;margin-bottom:8px;"></i>
+        <h3>حصل مشكلة</h3>
+        <p id="errorMsg"></p>
+        <button class="retry-btn" onclick="searchFlights()"><i class="fas fa-redo"></i> حاول تاني</button>
+    </div>
+
+    <div class="flights-list" id="flightsList"></div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer class="footer">
+    <div class="container">
+        <p>✈️ رحلتي - أسعار حقيقية من Amadeus + Kiwi | © 2025</p>
+    </div>
+</footer>
+
+<script>
+// ============================
+//  المتغيرات الرئيسية
+// ============================
+const API = '/api';
+let allFlights = [];
+let filteredFlights = [];
+
+// ============================
+//  عند فتح الصفحة
+// ============================
+document.addEventListener('DOMContentLoaded', () => {
+    // نحط تاريخ بعد أسبوع كافتراضي
+    const nextWeek = new Date();
+    nextWeek.setDate(nextWeek.getDate() + 7);
+    document.getElementById('travelDate').value = nextWeek.toISOString().split('T')[0];
+
+    // نتحقق إن السيرفر شغال
+    checkServer();
+});
+
+// ============================
+//  فحص السيرفر
+// ============================
+async function checkServer() {
+    const badge = document.getElementById('apiBadge');
+    const text = document.getElementById('apiText');
+    try {
+        const res = await fetch(`${API}/health`);
+        const data = await res.json();
+        if (data.status === 'OK') {
+            badge.className = 'api-badge online';
+            text.textContent = '🟢 متصل - أسعار حقيقية';
+        }
+    } catch {
+        badge.className = 'api-badge offline';
+        text.textContent = '🔴 السيرفر مش شغال';
+    }
+}
+
+// ============================
+//  البحث عن الرحلات
+// ============================
+async function searchFlights() {
+    const from = document.getElementById('fromCity').value;
+    const to = document.getElementById('toCity').value;
+    const date = document.getElementById('travelDate').value;
+    const passengers = document.getElementById('passengers').value;
+
+    if (!date) {
+        notify('⚠️ اختار تاريخ السفر الأول!', 'warning');
+        return;
+    }
+
+    // نظهر اللودينج
+    const btn = document.getElementById('searchBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري البحث...';
+    show('loadingArea'); hide('flightsList'); hide('filtersArea'); hide('errorArea'); hide('sourcesBar');
+    document.getElementById('flightsList').innerHTML = '';
+
+    try {
+        const url = `${API}/flights/search?from=${from}&to=${to}&date=${date}&passengers=${passengers}`;
+        const res = await fetch(url);
+
+        if (!res.ok) throw new Error(`خطأ: ${res.status}`);
+        const data = await res.json();
+
+        hide('loadingArea');
+
+        if (!data.success || data.totalResults === 0) {
+            showError('مفيش رحلات لهذا المسار. جرب تاريخ تاني أو وجهة مختلفة.');
+            return;
+        }
+
+        // نعرض المصادر
+        showSources(data.sources);
+
+        // نحفظ النتائج
+        allFlights = data.flights;
+        filteredFlights = [...allFlights];
+
+        // نعرض الفلاتر والنتائج
+        show('filtersArea');
+        document.getElementById('resultsInfo').textContent =
+            `${data.totalResults} رحلة | ${data.sources.filter(s=>s.status==='success').length} مصادر`;
+
+        if (data.cached) {
+            notify('📦 نتائج مخزنة (تتحدث كل 30 دقيقة)', 'info');
+        }
+
+        renderFlights(filteredFlights);
+
+    } catch (err) {
+        hide('loadingArea');
+        showError(`مقدرش أتصل بالسيرفر.\n\nتأكد إن السيرفر شغال:\n1. افتح Terminal\n2. اكتب: cd backend\n3. اكتب: npm start\n\n${err.message}`);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-search"></i> بحث';
+    }
+}
+
+// ============================
+//  عرض المصادر
+// ============================
+function showSources(sources) {
+    const bar = document.getElementById('sourcesBar');
+    bar.style.display = 'flex';
+    bar.innerHTML = '<strong style="font-size:0.8rem;">المصادر:</strong> ' +
+        sources.map(s => `
+            <span class="source-tag ${s.status==='success'?'ok':'fail'}">
+                <i class="fas ${s.status==='success'?'fa-check-circle':'fa-times-circle'}"></i>
+                ${s.name} ${s.count > 0 ? `(${s.count} رحلة)` : ''}
+            </span>
+        `).join('');
+}
+
+// ============================
+//  عرض الرحلات
+// ============================
+function renderFlights(flights) {
+    const list = document.getElementById('flightsList');
+    list.innerHTML = '';
+
+    flights.forEach((f, i) => {
+        const card = document.createElement('div');
+        card.className = `flight-card ${f.isBestDeal ? 'best-deal' : ''}`;
+        card.style.animationDelay = `${i * 0.07}s`;
+
+        const stars = '★'.repeat(Math.floor(f.rating)) + (f.rating % 1 >= 0.5 ? '½' : '');
+        const tags = (f.features||[]).map(t =>
+            `<span class="tag ${t.color}"><i class="fas ${t.icon}"></i> ${t.text}</span>`
+        ).join('');
+
+        card.innerHTML = `
+            <div class="card-inner">
+                <div class="airline-col">
+                    <div class="airline-icon" style="background:${f.logoColor||'#333'}">${f.airlineCode}</div>
+                    <div>
+                        <div class="airline-name">${f.airline}</div>
+                        <div class="airline-stars">${stars} (${f.rating})</div>
+                        <span class="from-tag">${f.source}</span>
+                    </div>
+                </div>
+
+                <div class="flight-col">
+                    <div class="route-row">
+                        <div class="city-box">
+                            <div class="city-time">${f.departTime}</div>
+                            <div class="city-code">${f.from}</div>
+                            <div class="city-label">${f.fromCity}</div>
+                        </div>
+                        <div class="route-line">
+                            <div class="dur-tag">${f.duration} ساعة</div>
+                            <div class="line-bar"></div>
+                            <div class="stop-tag" style="color:${f.isDirect?'var(--secondary)':'var(--accent)'}">
+                                ${f.isDirect ? '✓ مباشرة' : '⟲ '+f.type}
+                            </div>
+                        </div>
+                        <div class="city-box">
+                            <div class="city-time">${f.arriveTime}</div>
+                            <div class="city-code">${f.to}</div>
+                            <div class="city-label">${f.toCity}</div>
+                        </div>
+                    </div>
+                    <div class="tags-row">${tags}</div>
+                </div>
+
+                <div class="price-col">
+                    <div>
+                        <span class="price-old">${f.originalPrice?.toLocaleString()} ${f.currency}</span>
+                        <span class="price-off">-${f.discount}%</span>
+                    </div>
+                    <div>
+                        <span class="price-now ${f.isBestDeal?'pulse':''}">${f.price.toLocaleString()}</span>
+                        <span class="price-cur">${f.currency}</span>
+                    </div>
+                    <div class="price-per">للشخص الواحد</div>
+                    ${f.seatsLeft ? `<div class="seats-warn">🔥 ${f.seatsLeft} مقعد فقط!</div>` : ''}
+                    <button class="btn-book" onclick="book('${f.airline}',${f.price},'${f.bookingLink||''}')">
+                        ${f.bookingLink ? '<i class="fas fa-external-link-alt"></i> احجز مباشرة' : '<i class="fas fa-shopping-cart"></i> احجز'}
+                    </button>
+                </div>
+            </div>
+
+            <div class="details-bar">
+                <button class="details-btn" onclick="toggleDet('${f.id}')">
+                    <i class="fas fa-chevron-down"></i> تفاصيل الرحلة
+                </button>
+            </div>
+
+            <div class="details-panel" id="det-${f.id}">
+                ${f.details ? `
+                <div class="details-grid">
+                    <div class="d-item"><i class="fas fa-hashtag"></i><div><strong>رقم الرحلة</strong><span>${f.details.flightNumber||'-'}</span></div></div>
+                    <div class="d-item"><i class="fas fa-plane"></i><div><strong>الطائرة</strong><span>${f.details.aircraft}</span></div></div>
+                    <div class="d-item"><i class="fas fa-suitcase-rolling"></i><div><strong>الأمتعة</strong><span>${f.details.baggage}</span></div></div>
+                    <div class="d-item"><i class="fas fa-utensils"></i><div><strong>الوجبات</strong><span>${f.details.meal}</span></div></div>
+                    <div class="d-item"><i class="fas fa-tv"></i><div><strong>الترفيه</strong><span>${f.details.entertainment}</span></div></div>
+                    <div class="d-item"><i class="fas fa-arrows-alt-v"></i><div><strong>المقعد</strong><span>${f.details.legroom}</span></div></div>
+                    <div class="d-item"><i class="fas fa-plug"></i><div><strong>الشحن</strong><span>${f.details.usb}</span></div></div>
+                    <div class="d-item"><i class="fas fa-ban"></i><div><strong>الإلغاء</strong><span>${f.details.cancellation}</span></div></div>
+                    <div class="d-item"><i class="fas fa-map-marker-alt"></i><div><strong>التوقفات</strong><span>${f.details.stops}</span></div></div>
+                </div>` : '<p>لا توجد تفاصيل</p>'}
+            </div>
+        `;
+        list.appendChild(card);
+    });
+}
+
+// ============================
+//  التفاصيل
+// ============================
+function toggleDet(id) {
+    document.getElementById(`det-${id}`).classList.toggle('open');
+}
+
+// ============================
+//  الفلاتر
+// ============================
+function applyFilter(type, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    let list = [...allFlights];
+    switch(type) {
+        case 'direct': list = list.filter(f => f.isDirect); break;
+        case 'cheapest': list.sort((a,b) => a.price - b.price); break;
+        case 'fastest': list.sort((a,b) => a.durationMin - b.durationMin); break;
+        case 'top': list.sort((a,b) => b.rating - a.rating); break;
+    }
+    filteredFlights = list;
+    document.getElementById('resultsInfo').textContent = `${list.length} رحلة`;
+    renderFlights(list);
+}
+
+function applySort() {
+    const val = document.getElementById('sortBy').value;
+    let list = [...filteredFlights];
+    switch(val) {
+        case 'price-asc': list.sort((a,b) => a.price - b.price); break;
+        case 'price-desc': list.sort((a,b) => b.price - a.price); break;
+        case 'duration': list.sort((a,b) => a.durationMin - b.durationMin); break;
+        case 'rating': list.sort((a,b) => b.rating - a.rating); break;
+    }
+    renderFlights(list);
+}
+
+// ============================
+//  الحجز
+// ============================
+function book(airline, price, link) {
+    if (link) window.open(link, '_blank');
+    notify(`✅ جاري تحويلك لحجز ${airline} - ${price.toLocaleString()} ج.م`, 'success');
+}
+
+// ============================
+//  دوال مساعدة
+// ============================
+function show(id) { document.getElementById(id).classList.add('show'); }
+function hide(id) { const el = document.getElementById(id); el.classList.remove('show'); el.style.display = ''; }
+function showError(msg) { document.getElementById('errorArea').classList.add('show'); document.getElementById('errorMsg').textContent = msg; }
+
+function notify(msg, type='success') {
+    const colors = { success:'var(--gradient)', warning:'linear-gradient(135deg,#f9ab00,#ff6b6b)', info:'linear-gradient(135deg,#1a73e8,#6366f1)' };
+    const el = document.createElement('div');
+    el.style.cssText = `position:fixed;top:75px;left:50%;transform:translateX(-50%);background:${colors[type]};color:white;padding:12px 25px;border-radius:10px;z-index:3000;font-family:'Cairo';font-weight:700;box-shadow:0 8px 30px rgba(0,0,0,0.3);text-align:center;font-size:0.9rem;max-width:90%;`;
+    el.textContent = msg;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3500);
+}
+</script>
+</body>
+</html>
